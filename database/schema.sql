@@ -1,9 +1,0 @@
-CREATE DATABASE IF NOT EXISTS mausam_ai;
-USE mausam_ai;
-CREATE TABLE users (id CHAR(36) PRIMARY KEY, firebase_uid VARCHAR(128) UNIQUE NOT NULL, name VARCHAR(120), email VARCHAR(255), user_type ENUM('student','office_worker','farmer','traveller','outdoor_worker','general') DEFAULT 'general', language VARCHAR(10) DEFAULT 'en', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-CREATE TABLE preferences (id BIGINT AUTO_INCREMENT PRIMARY KEY, user_id CHAR(36) NOT NULL, interest VARCHAR(40) NOT NULL, enabled BOOLEAN DEFAULT TRUE, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);
-CREATE TABLE saved_locations (id BIGINT AUTO_INCREMENT PRIMARY KEY, user_id CHAR(36) NOT NULL, label VARCHAR(40) NOT NULL, address VARCHAR(255), latitude DECIMAL(9,6), longitude DECIMAL(9,6), FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);
-CREATE TABLE weather_data (id BIGINT AUTO_INCREMENT PRIMARY KEY, location_key VARCHAR(120), observed_at TIMESTAMP, payload JSON NOT NULL, source VARCHAR(50) DEFAULT 'demo');
-CREATE TABLE alerts (id BIGINT AUTO_INCREMENT PRIMARY KEY, location_key VARCHAR(120), severity VARCHAR(20), title VARCHAR(255), body TEXT, starts_at TIMESTAMP, ends_at TIMESTAMP, payload JSON);
-CREATE TABLE recommendations (id BIGINT AUTO_INCREMENT PRIMARY KEY, user_id CHAR(36), kind VARCHAR(50), body TEXT, relevance_score DECIMAL(5,4), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);
-CREATE TABLE user_interactions (id BIGINT AUTO_INCREMENT PRIMARY KEY, user_id CHAR(36), item_id VARCHAR(100), action VARCHAR(40), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);
